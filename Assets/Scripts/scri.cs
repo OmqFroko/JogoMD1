@@ -7,8 +7,17 @@ using UnityEngine.InputSystem;
 public class Comportamento : MonoBehaviour
 {
     public Rigidbody variavel;
-    public float frente = 1;
+    public float frente = 5;
     public float lado = 10;
+
+    private void OnCollisionEnter(Collision quem)
+    {
+        if (quem.gameObject.tag == "Bom")
+        {
+            transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+        }
+    }
+
     void Update()
     {
         Keyboard teclado = Keyboard.current;

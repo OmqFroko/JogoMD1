@@ -3,6 +3,7 @@ using UnityEngine;
 public class ControloPlr : MonoBehaviour
 {
     public Rigidbody batata;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
