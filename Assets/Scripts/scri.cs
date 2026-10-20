@@ -20,6 +20,10 @@ public class Comportamento : MonoBehaviour
     public TMP_Text coins;
     public TMP_Text health;
 
+    public AudioSource som;
+    public AudioClip bater;
+    public AudioClip coleta;
+
     void FixedUpdate()
     {
         Keyboard teclado = Keyboard.current;
@@ -39,14 +43,29 @@ public class Comportamento : MonoBehaviour
     {
         if (quem.gameObject.tag == "Mau")
         {
+            som.PlayOneShot(bater);
             vida -= 1;
             health.text = vida.ToString();
+            if (vida < 1)
+            {
+                FindAnyObjectByType<controlador>().acabou();
+            }
         }
     }
+
+    private void OnCollisionExit(Collision quem)
+    {
+        if (quem.gameObject.tag == "Platforma")
+        {
+            FindAnyObjectByType<controlador>().acabou();
+        }
+    }
+
     private void OnTriggerEnter(Collider quem)
     {
         if (quem.gameObject.tag == "Bom")
         {
+            som.PlayOneShot(coleta);
             coin += 1;
             coins.text = coin.ToString();
         }

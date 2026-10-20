@@ -12,6 +12,7 @@ TagManager:
   - Cube_Spawn_Point_2
   - Bom
   - Mau
+  - Platforma
   layers:
   - Default
   - TransparentFX
