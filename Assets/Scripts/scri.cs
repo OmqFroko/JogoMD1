@@ -2,6 +2,7 @@ using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -68,6 +69,17 @@ public class Comportamento : MonoBehaviour
             som.PlayOneShot(coleta);
             coin += 1;
             coins.text = coin.ToString();
+            quem.gameObject.SetActive(false);
+        }
+
+        if (quem.gameObject.tag == "Finish")
+        {
+            FindAnyObjectByType<controlador>().passou();
+        }
+
+        if (quem.gameObject.tag == "Respawn")
+        {
+            FindAnyObjectByType<controlador>().acabou();
         }
     }
 }

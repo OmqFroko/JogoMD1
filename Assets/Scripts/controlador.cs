@@ -14,4 +14,9 @@ public class controlador : MonoBehaviour
     {
         SceneManager.LoadScene("Nível 1");
     }
+
+    public void passou()
+    {
+        SceneManager.LoadScene("Nível 2");
+    }
 }
