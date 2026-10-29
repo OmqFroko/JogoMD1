@@ -12,7 +12,7 @@ public class controlador : MonoBehaviour
 
     void recomecar()
     {
-        SceneManager.LoadScene("Nível 1");
+        SceneManager.LoadScene("Menu");
     }
 
     public void passou()
