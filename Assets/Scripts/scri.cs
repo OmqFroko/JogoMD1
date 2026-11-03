@@ -6,6 +6,8 @@ using UnityEditor;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
@@ -14,6 +16,7 @@ public class Comportamento : MonoBehaviour
     public Rigidbody variavel;
     public float frente = 5;
     public float lado = 10;
+    private const float DIVISOR_ECRA = 0.5f;
 
     public float vida = 10;
     public float coin = 0;
@@ -25,22 +28,52 @@ public class Comportamento : MonoBehaviour
     public AudioClip bater;
     public AudioClip coleta;
 
+    private void OnEnable()
+    {
+        EnhancedTouchSupport.Enable();
+    }
+
+    private void OnDisable()
+    {
+        EnhancedTouchSupport.Disable();
+    }
+
     void FixedUpdate()
     {
-        Keyboard teclado = Keyboard.current;
         variavel.AddForce(0, 0, frente);
 
-        if (teclado.aKey.isPressed)
+        float direcao = LerDirecao();
+        if (direcao != 0f)
         {
-            variavel.AddForce(-lado, 0, 0);
-        }
-        if (teclado.dKey.isPressed)
-        {
-            variavel.AddForce(lado, 0, 0);
+            variavel.AddForce(direcao * lado, 0, 0);
         }
     }
 
-    private void OnCollisionEnter(Collision quem)
+    private float LerDirecao()
+    {
+        float direcao = 0f;
+
+        // Teclado (computador)
+        Keyboard teclado = Keyboard.current;
+        if (teclado != null)
+        {
+            if (teclado.aKey.isPressed) direcao -= 1f;
+            if (teclado.dKey.isPressed) direcao += 1f;
+        }
+
+        // Toque (telemóvel)
+        foreach (Touch toque in Touch.activeTouches)
+        {
+            if (toque.screenPosition.x < Screen.width * DIVISOR_ECRA)
+                direcao -= 1f;
+            else
+                direcao += 1f;
+        }
+
+        return Mathf.Clamp(direcao, -1f, 1f);
+    }
+
+private void OnCollisionEnter(Collision quem)
     {
         if (quem.gameObject.tag == "Mau")
         {
